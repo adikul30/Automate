@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         turnon = (Button) findViewById(R.id.turnon);
-        turnoff = (Button) findViewById(R.id.turnoff);
+//        turnoff = (Button) findViewById(R.id.turnoff);
 
         turnon.setText("TURN ON");
 
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                String url = "http://192.168.43.10/onoff.php";
+                String url = "http://192.168.0.123/onoff.php";
                 String value = "1";
                 OkHttpClient okHttpClient = new OkHttpClient();
 
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(MainActivity.this,"Something failure",Toast.LENGTH_LONG).show();
+                                Toast.makeText(MainActivity.this,"Something wrong",Toast.LENGTH_LONG).show();
 
                             }
                         });
@@ -94,48 +94,48 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        turnoff.setText("TURN OFF");
-
-        turnoff.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String url = "http://192.168.43.10/onoff.php";
-                String value = "10";
-                OkHttpClient okHttpClient = new OkHttpClient();
-
-                RequestBody body = new FormBody.Builder()
-                        .add("value",value)
-                        .build();
-
-                offrequest = new Request.Builder()
-                        .url(url)
-                        .method("POST",body.create(null, new byte[0]))
-                        .post(body)
-                        .build();
-
-                okHttpClient.newCall(offrequest).enqueue(new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        Toast.makeText(MainActivity.this,"Something wrong", Toast.LENGTH_LONG).show();
-
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        offresponseString = response.body().string();
-                        Log.v("response", offresponseString);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(MainActivity.this,"Turning off Light", Toast.LENGTH_LONG).show();
-
-                            }
-                        });
-                    }
-                });
-            }
-        });
+//        turnoff.setText("TURN OFF");
+//
+//        turnoff.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String url = "http://192.168.43.10/onoff.php";
+//                String value = "10";
+//                OkHttpClient okHttpClient = new OkHttpClient();
+//
+//                RequestBody body = new FormBody.Builder()
+//                        .add("value",value)
+//                        .build();
+//
+//                offrequest = new Request.Builder()
+//                        .url(url)
+//                        .method("POST",body.create(null, new byte[0]))
+//                        .post(body)
+//                        .build();
+//
+//                okHttpClient.newCall(offrequest).enqueue(new Callback() {
+//                    @Override
+//                    public void onFailure(Call call, IOException e) {
+//                        Toast.makeText(MainActivity.this,"Something wrong", Toast.LENGTH_LONG).show();
+//
+//                        e.printStackTrace();
+//                    }
+//
+//                    @Override
+//                    public void onResponse(Call call, Response response) throws IOException {
+//                        offresponseString = response.body().string();
+//                        Log.v("response", offresponseString);
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                Toast.makeText(MainActivity.this,"Turning off Light", Toast.LENGTH_LONG).show();
+//
+//                            }
+//                        });
+//                    }
+//                });
+//            }
+//        });
 
 
     }

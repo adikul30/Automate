@@ -32,14 +32,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/turnoff"
-        android:padding="15dp"
-        android:layout_marginTop="50dp"
-        android:textColor="#ffffff"
-        android:elevation="5.5dp"
-        android:background="@drawable/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <!--<Button-->
+        <!--android:id="@+id/turnoff"-->
+        <!--android:padding="15dp"-->
+        <!--android:layout_marginTop="50dp"-->
+        <!--android:textColor="#ffffff"-->
+        <!--android:elevation="5.5dp"-->
+        <!--android:background="@drawable/button"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content" />-->
 
 </LinearLayout>
