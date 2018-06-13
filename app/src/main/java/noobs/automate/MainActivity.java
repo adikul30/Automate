@@ -9,134 +9,110 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.io.IOException;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class MainActivity extends AppCompatActivity {
-    Button turnon,turnoff;
-    String onresponseString,offresponseString;
-
-    private Request onrequest,offrequest;
-
+    Button turnon, turnoff;
+    String url = "http://192.168.43.94:8888/onoff.php";
+    private String ON = "1";
+    private String OFF = "0";
+    private RequestQueue queue;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
-
-
-
+        queue = Volley.newRequestQueue(this);
 
         turnon = (Button) findViewById(R.id.turnon);
-//        turnoff = (Button) findViewById(R.id.turnoff);
-
-        turnon.setText("TURN ON");
+        turnoff = (Button) findViewById(R.id.turnoff);
 
         turnon.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
-                String url = "http://192.168.0.123/onoff.php";
-                String value = "1";
-                OkHttpClient okHttpClient = new OkHttpClient();
-
-                RequestBody body = new FormBody.Builder()
-                        .add("value",value)
-                        .build();
-
-                onrequest = new Request.Builder()
-                        .url(url)
-                        .method("POST",body.create(null, new byte[0]))
-                        .post(body)
-                        .build();
-
-                Log.v("insideon", body.toString());
-
-
-                okHttpClient.newCall(onrequest).enqueue(new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        Log.v("Onfailure","fail");
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(MainActivity.this,"Something wrong",Toast.LENGTH_LONG).show();
-
-                            }
-                        });
-
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        onresponseString = response.body().string();
-                        Log.v("response", onresponseString);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(MainActivity.this,"Turning on Light",Toast.LENGTH_LONG).show();
-
-                            }
-                        });
-                    }
-                });
+                turnOnLights();
             }
         });
 
-//        turnoff.setText("TURN OFF");
-//
-//        turnoff.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String url = "http://192.168.43.10/onoff.php";
-//                String value = "10";
-//                OkHttpClient okHttpClient = new OkHttpClient();
-//
-//                RequestBody body = new FormBody.Builder()
-//                        .add("value",value)
-//                        .build();
-//
-//                offrequest = new Request.Builder()
-//                        .url(url)
-//                        .method("POST",body.create(null, new byte[0]))
-//                        .post(body)
-//                        .build();
-//
-//                okHttpClient.newCall(offrequest).enqueue(new Callback() {
-//                    @Override
-//                    public void onFailure(Call call, IOException e) {
-//                        Toast.makeText(MainActivity.this,"Something wrong", Toast.LENGTH_LONG).show();
-//
-//                        e.printStackTrace();
-//                    }
-//
-//                    @Override
-//                    public void onResponse(Call call, Response response) throws IOException {
-//                        offresponseString = response.body().string();
-//                        Log.v("response", offresponseString);
-//                        runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                Toast.makeText(MainActivity.this,"Turning off Light", Toast.LENGTH_LONG).show();
-//
-//                            }
-//                        });
-//                    }
-//                });
-//            }
-//        });
+        turnoff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                turnOffLights();
+            }
+        });
 
+    }
+
+    private void turnOnLights() {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // response
+                        Toast.makeText(MainActivity.this, "Turning on lights", Toast.LENGTH_SHORT).show();
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                        Toast.makeText(MainActivity.this, "Some error", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("light", "1");
+                return params;
+            }
+        };
+        queue.add(stringRequest);
+
+    }
+
+    private void turnOffLights() {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // response
+                        Toast.makeText(MainActivity.this, "Turning off lights", Toast.LENGTH_SHORT).show();
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                        Toast.makeText(MainActivity.this, "Some error", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("light", "00");
+                return params;
+            }
+        };
+        queue.add(stringRequest);
 
     }
 }

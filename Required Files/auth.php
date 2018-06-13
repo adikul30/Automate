@@ -1,3 +1,3 @@
 <?php 
-$connection = mysqli_connect("localhost","root","kulkarni","IOT");
+$connection = mysqli_connect("localhost","root","root","smarty");
 ?>

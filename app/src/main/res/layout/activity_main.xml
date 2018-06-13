@@ -24,6 +24,7 @@
 
 
     <Button
+        android:text="TURN ON"
         android:id="@+id/turnon"
         android:padding="15dp"
         android:textColor="#ffffff"
@@ -32,14 +33,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <!--<Button-->
-        <!--android:id="@+id/turnoff"-->
-        <!--android:padding="15dp"-->
-        <!--android:layout_marginTop="50dp"-->
-        <!--android:textColor="#ffffff"-->
-        <!--android:elevation="5.5dp"-->
-        <!--android:background="@drawable/button"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content" />-->
+    <Button
+        android:text="TURN OFF"
+        android:id="@+id/turnoff"
+        android:padding="15dp"
+        android:layout_marginTop="50dp"
+        android:textColor="#ffffff"
+        android:elevation="5.5dp"
+        android:background="@drawable/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
